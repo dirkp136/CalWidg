@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Glass look: translucent tint, light falloff top to bottom, bright rim. No real backdrop blur on Android widgets. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="@android:dimen/system_app_widget_background_radius" />
+            <gradient android:angle="270" android:type="linear"
+                android:startColor="#80FFFFFF" android:centerColor="#47FFFFFF" android:endColor="#5CFFFFFF" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="@android:dimen/system_app_widget_background_radius" />
+            <gradient android:angle="315" android:type="linear"
+                android:startColor="#4DFFFFFF" android:centerColor="#00FFFFFF" android:endColor="#14FFFFFF" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="@android:dimen/system_app_widget_background_radius" />
+            <stroke android:width="1dp" android:color="#B3FFFFFF" />
+        </shape>
+    </item>
+</layer-list>

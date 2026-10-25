@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">CalWidg</string>
+    <string name="widget_month">Monat</string>
+    <string name="widget_agenda">Heute &amp; Morgen</string>
+    <string name="widget_combo">Monat + Agenda</string>
+    <string name="widget_month_desc">Monatsübersicht mit Auslastung pro Tag</string>
+    <string name="widget_agenda_desc">Termine von heute und morgen mit Wetter</string>
+    <string name="widget_combo_desc">Kleiner Monat und Agenda nebeneinander</string>
+    <string name="widget_date">Datum</string>
+    <string name="widget_date_desc">Heutiges Datum im App-Icon-Stil</string>
+</resources>
