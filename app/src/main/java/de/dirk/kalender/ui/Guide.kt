@@ -2,11 +2,18 @@ package de.dirk.kalender.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -96,18 +103,9 @@ private val guide = listOf(
     )),
 )
 
-@Composable
-fun GuideScreen(modifier: Modifier = Modifier) {
-    LazyColumn(
-        modifier = modifier,
-        contentPadding = PaddingValues(20.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        items(guide) { sec ->
-            Section(sec.title) {
-                sec.blocks.forEach { Block(it) }
-            }
-        }
+fun LazyListScope.guideItems() {
+    items(guide) { sec ->
+        Card(sec.title) { sec.blocks.forEach { Block(it) } }
     }
 }
 
@@ -119,8 +117,14 @@ private fun Block(b: G) {
         is G.P -> Text(b.text, style = body)
         is G.Steps -> Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             b.items.forEachIndexed { i, t ->
-                Row {
-                    Text("${i + 1}.", style = body, fontWeight = FontWeight.SemiBold, modifier = Modifier.width(24.dp))
+                Row(verticalAlignment = Alignment.Top) {
+                    Box(
+                        Modifier.size(22.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primaryContainer),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("${i + 1}", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                    }
+                    Spacer(Modifier.width(10.dp))
                     Text(t, style = body)
                 }
             }
@@ -135,7 +139,7 @@ private fun Block(b: G) {
         }
         is G.Pairs -> Column {
             b.items.forEachIndexed { i, (k, v) ->
-                if (i > 0) HorizontalDivider(Modifier.padding(vertical = 8.dp))
+                if (i > 0) HorizontalDivider(Modifier.padding(vertical = 10.dp), color = MaterialTheme.colorScheme.outlineVariant)
                 Text(k, style = MaterialTheme.typography.titleSmall)
                 Text(v, style = body, color = muted)
             }

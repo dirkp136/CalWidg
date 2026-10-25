@@ -19,6 +19,12 @@ import java.io.File
 @Config(sdk = [34], application = Application::class, qualifiers = "de-w411dp-h891dp-xxhdpi")
 class SettingsRenderTest {
     @Test fun settings() = shot(null, "settings")
+
+    @Test @Config(qualifiers = "de-w411dp-h1500dp-xxhdpi")
+    fun settingsTall() = shot(null, "settings_tall")
+
+    @Test @Config(qualifiers = "de-w411dp-h1500dp-night-xxhdpi")
+    fun settingsTallDark() = shot(null, "settings_tall_dark")
     @Test fun calendars() = shot("Kalender", "settings_kalender")
     @Test fun guide() = shot("Anleitung", "settings_anleitung")
 

@@ -14,8 +14,8 @@ android {
         applicationId = "de.dirk.kalender"
         minSdk = 31
         targetSdk = 36
-        versionCode = 11
-        versionName = "2.0"
+        versionCode = 12
+        versionName = "2.1"
     }
 
     // Signing data lives in keystore.properties (not in git), see README.
