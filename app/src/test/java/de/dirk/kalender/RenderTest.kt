@@ -91,13 +91,14 @@ class RenderTest {
         host.addView(v, FrameLayout.LayoutParams(wPx, hPx))
         host.measure(View.MeasureSpec.makeMeasureSpec(wPx, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(hPx, View.MeasureSpec.EXACTLY))
         host.layout(0, 0, wPx, hPx)
-        val m = (24 * d).toInt()
+        val store = name.startsWith("store_") // transparent, no margin: composited later
+        val m = if (store) 0 else (24 * d).toInt()
         val bmp = Bitmap.createBitmap(wPx + 2 * m, hPx + 2 * m, Bitmap.Config.ARGB_8888)
         val c = Canvas(bmp)
-        c.drawPaint(Paint().apply {
+        if (!store) c.drawPaint(Paint().apply {
             shader = LinearGradient(0f, 0f, 0f, bmp.height.toFloat(), 0xFF8E2DE2.toInt(), 0xFFE5338F.toInt(), Shader.TileMode.CLAMP)
         })
-        if (name.contains("glass")) {
+        if (!store && name.contains("glass")) {
             // Wallpaper-like backdrop with soft color blobs to judge translucency.
             val blobs = listOf(Triple(0.15f, 0.2f, 0xFFFFB347), Triple(0.8f, 0.35f, 0xFF36D1DC), Triple(0.45f, 0.95f, 0xFF5B86E5))
             for ((fx, fy, col) in blobs) {
@@ -126,6 +127,21 @@ class RenderTest {
     }
 
     @Test fun light() = all("")
+
+    /** Transparent renders for store screenshots. */
+    private fun store(suffix: String) {
+        val ctx = ApplicationProvider.getApplicationContext<Context>()
+        BaseWidget.snapshotOverride = { snapshot(it) }
+        render(ctx, ComboWidget(), DpSize(380.dp, 200.dp), "store_combo$suffix")
+        render(ctx, MonthWidget(), DpSize(380.dp, 390.dp), "store_month$suffix")
+        render(ctx, AgendaWidget(), DpSize(380.dp, 200.dp), "store_agenda$suffix")
+        render(ctx, de.dirk.kalender.widget.DateWidget(), DpSize(180.dp, 180.dp), "store_date$suffix")
+        render(ctx, MonthWidget(), DpSize(180.dp, 180.dp), "store_msmall$suffix")
+    }
+    @Test fun storeLight() { forcedTheme = 1; store("_light") }
+    @Test fun storeDark() { forcedTheme = 2; store("_dark") }
+    @Test fun storeGlassLight() { glass = true; forcedTheme = 1; store("_glight") }
+    @Test fun storeGlassDark() { glass = true; forcedTheme = 2; store("_gdark") }
 
     /** System is light, widget forced to dark (and the reverse below). */
     @Test fun glassLight() { glass = true; forcedTheme = 1; all("_glass_light") }

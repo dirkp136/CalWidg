@@ -8,14 +8,14 @@ plugins {
 
 android {
     namespace = "de.dirk.kalender"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "de.dirk.kalender"
         minSdk = 31
-        targetSdk = 35
-        versionCode = 9
-        versionName = "1.8"
+        targetSdk = 36
+        versionCode = 10
+        versionName = "1.9"
     }
 
     // Signing data lives in keystore.properties (not in git), see README.
