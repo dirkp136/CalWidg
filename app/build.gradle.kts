@@ -14,8 +14,8 @@ android {
         applicationId = "de.dirk.kalender"
         minSdk = 31
         targetSdk = 36
-        versionCode = 10
-        versionName = "1.9"
+        versionCode = 11
+        versionName = "2.0"
     }
 
     // Signing data lives in keystore.properties (not in git), see README.
@@ -55,6 +55,7 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.9.3")
     implementation(platform("androidx.compose:compose-bom:2024.12.01"))
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.glance:glance-appwidget:1.1.1")
     implementation("androidx.glance:glance-material3:1.1.1")

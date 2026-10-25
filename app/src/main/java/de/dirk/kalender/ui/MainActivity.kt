@@ -24,8 +24,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.MenuBook
+import androidx.compose.material.icons.filled.Widgets
+import androidx.compose.material.icons.outlined.CalendarMonth
+import androidx.compose.material.icons.outlined.MenuBook
+import androidx.compose.material.icons.outlined.Widgets
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -121,19 +129,36 @@ private fun SettingsScreen() {
 
     var tab by rememberSaveable { mutableIntStateOf(0) }
 
-    Scaffold(topBar = {
-        Column(Modifier.statusBarsPadding()) {
+    val tabs = listOf(
+        Triple("Widgets", Icons.Outlined.Widgets, Icons.Filled.Widgets),
+        Triple("Kalender", Icons.Outlined.CalendarMonth, Icons.Filled.CalendarMonth),
+        Triple("Anleitung", Icons.Outlined.MenuBook, Icons.Filled.MenuBook),
+    )
+
+    Scaffold(
+        topBar = {
             Text(
                 "CalWidg",
                 style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(start = 20.dp, top = 16.dp, bottom = 8.dp)
+                modifier = Modifier.statusBarsPadding().padding(start = 20.dp, top = 16.dp, bottom = 4.dp)
             )
-            TabRow(selectedTabIndex = tab) {
-                Tab(selected = tab == 0, onClick = { tab = 0 }, text = { Text("Widgets") })
-                Tab(selected = tab == 1, onClick = { tab = 1 }, text = { Text("Kalender") })
+        },
+        bottomBar = {
+            NavigationBar {
+                tabs.forEachIndexed { i, (label, outlined, filled) ->
+                    NavigationBarItem(
+                        selected = tab == i, onClick = { tab = i },
+                        icon = { Icon(if (tab == i) filled else outlined, contentDescription = null) },
+                        label = { Text(label) }
+                    )
+                }
             }
         }
-    }) { inner ->
+    ) { inner ->
+        if (tab == 2) {
+            GuideScreen(Modifier.fillMaxSize().padding(inner))
+            return@Scaffold
+        }
         LazyColumn(
             modifier = Modifier.fillMaxSize().padding(inner),
             contentPadding = PaddingValues(20.dp),
@@ -275,7 +300,7 @@ private fun SettingsScreen() {
 }
 
 @Composable
-private fun Section(title: String, content: @Composable () -> Unit) {
+internal fun Section(title: String, content: @Composable () -> Unit) {
     ElevatedCard(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
