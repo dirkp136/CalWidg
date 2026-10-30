@@ -49,8 +49,10 @@ jobs:
         run: |
           apk=$(ls app/build/outputs/apk/release/*.apk | head -1)
           cp "$apk" "CalWidg-$TAG.apk"
+          # Release notes come from the annotated tag message
+          git fetch --force origin "refs/tags/$TAG:refs/tags/$TAG"
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" "CalWidg-$TAG.apk" --clobber
           else
-            gh release create "$TAG" "CalWidg-$TAG.apk" --title "CalWidg ${TAG#v}" --generate-notes
+            gh release create "$TAG" "CalWidg-$TAG.apk" --title "CalWidg ${TAG#v}" --notes-from-tag
           fi
